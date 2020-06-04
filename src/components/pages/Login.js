@@ -18,14 +18,14 @@ function Login(props) {
   const [loginUser, { loading }] = useMutation(LOGIN_USER, {
     update(_, { data: { login: userData } }) {
       context.login(userData);
-      props.history.push("/user");
+      console.log(userData);
+      props.history.push("/");
     },
     onError(err) {
       setErrors(err.graphQLErrors[0].extensions.exception.errors);
     },
     variables: values,
   });
-
   function loginUserCallback() {
     loginUser();
   }
@@ -75,9 +75,8 @@ function Login(props) {
 const LOGIN_USER = gql`
   mutation login($email: String!, $password: String!) {
     login(email: $email, password: $password) {
-      id
       token
-      firstName
+      userId
     }
   }
 `;

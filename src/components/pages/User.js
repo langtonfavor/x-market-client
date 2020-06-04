@@ -1,41 +1,27 @@
-import React from "react";
-import { useQuery } from "@apollo/react-hooks";
+import React, { useContext } from "react";
 import gql from "graphql-tag";
-import { Grid, Image } from "semantic-ui-react";
+import { Query, useQuery } from "@apollo/react-hooks";
+import { AuthProvider } from "../context/auth";
+import { AuthContext } from "../context/auth";
 
-import UserCard from "../../components/pages/UserCard";
+function User(props) {
+  const context = useContext(AuthContext);
+  const userId = context.userId;
 
-function User() {
-  const {
-    loading,
-    data: { getUsers: users },
-  } = useQuery(FETCH_QUERY);
+  const data = ({ userId } = useQuery(FETCH_USER, {
+    variables: {
+      userId,
+    },
+  }));
 
-  return (
-    <Grid columns={3}>
-      <Grid.Row>
-        <h1>user</h1>
-      </Grid.Row>
-      <Grid.Row>
-        {loading ? (
-          <h1>loading</h1>
-        ) : (
-          users &&
-          users.map((user) => (
-            <Grid.Column key={user.id}>
-              <UserCard user={user} />
-            </Grid.Column>
-          ))
-        )}
-      </Grid.Row>
-    </Grid>
-  );
+  console.log(data);
+
+  return <h1>heading</h1>;
 }
 
-const FETCH_QUERY = gql`
-  {
-    getUsers {
-      id
+const FETCH_USER = gql`
+  query($userId: ID!) {
+    getUser(userId: $userId) {
       firstName
       lastName
       contact
