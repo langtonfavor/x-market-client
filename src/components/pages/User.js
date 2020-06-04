@@ -6,13 +6,15 @@ import { AuthContext } from "../context/auth";
 
 function User(props) {
   const context = useContext(AuthContext);
-  const userId = context.userId;
+  const userId = context.user?.userId;
+  console.log('userId: ', userId);
 
-  const data = ({ userId } = useQuery(FETCH_USER, {
+  const { data } = useQuery(FETCH_USER, {
     variables: {
       userId,
     },
-  }));
+    skip: !userId,
+  });
 
   console.log(data);
 
