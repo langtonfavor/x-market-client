@@ -1,22 +1,32 @@
 import React, { useContext } from "react";
 import gql from "graphql-tag";
-import { Query, useQuery } from "@apollo/react-hooks";
-import { AuthProvider } from "../context/auth";
+import { useQuery } from "@apollo/react-hooks";
 import { AuthContext } from "../context/auth";
+import { Segment } from "semantic-ui-react";
+import moment from "moment";
 
 function User(props) {
   const context = useContext(AuthContext);
-  const userId = context.userId;
+  const userId = context.user?.userId;
+  console.log("userId: ", userId);
 
-  const data = ({ userId } = useQuery(FETCH_USER, {
+  const { data } = useQuery(FETCH_USER, {
     variables: {
       userId,
     },
-  }));
+    skip: !userId,
+  });
 
   console.log(data);
-
-  return <h1>heading</h1>;
+  /* const {
+    firstName,
+    lastName,
+    contact,
+    accountBal,
+    email,
+    createdAt,
+  } = data.; */
+  return <h1>h</h1>;
 }
 
 const FETCH_USER = gql`
@@ -26,7 +36,9 @@ const FETCH_USER = gql`
       lastName
       contact
       accountBal
+      email
     }
   }
 `;
+
 export default User;
