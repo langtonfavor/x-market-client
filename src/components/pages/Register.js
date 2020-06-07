@@ -7,8 +7,8 @@ import { AuthContext } from "../context/auth";
 import { useForm } from "../../util/hooks";
 
 function Register(props) {
-  const context = useContext(AuthContext);
   const [errors, setErrors] = useState({});
+  const context = useContext(AuthContext);
 
   const { onChange, onSubmit, values } = useForm(registerUser, {
     firstName: "",
@@ -24,6 +24,7 @@ function Register(props) {
       props.history.push("/login");
     },
     onError(err) {
+      console.log(err.graphQLErrors[0].extensions.exception.errors);
       setErrors(err.graphQLErrors[0].extensions.exception.errors);
     },
     variables: values,
@@ -120,7 +121,6 @@ const REGISTER_USER = gql`
         password: $password
       }
     ) {
-      id
       email
       token
     }

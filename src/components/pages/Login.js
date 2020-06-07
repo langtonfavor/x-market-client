@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import { Form, Button } from "semantic-ui-react";
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/react-hooks";
-
 import { AuthContext } from "../context/auth";
 import { useForm } from "../../util/hooks";
 
@@ -21,6 +20,7 @@ function Login(props) {
       props.history.push("/user");
     },
     onError(err) {
+      console.log(err.graphQLErrors[0].extensions.exception.errors);
       setErrors(err.graphQLErrors[0].extensions.exception.errors);
     },
     variables: values,
